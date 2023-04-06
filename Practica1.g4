@@ -2,16 +2,22 @@ grammar Practica1;
 
 program: dcllist funlist sentlist EOF;
 
-dcllist: | dcllist dcl;
-funlist: | funlist funcdef;
+dcllist: | dcl dcllist;
+funlist: | funcdef funlist ;
 sentlist: mainhead '{' code '}';
 
 
 // ------------------------------- Parte declaracion de variables globales
 dcl: ctelist | varlist;
-ctelist: '#define' CONST_DEF_IDENTIFIER simpvalue | ctelist '#define'CONST_DEF_IDENTIFIER simpvalue ;
+
+ctelist: '#define' CONST_DEF_IDENTIFIER simpvalue ctelist_prima ;  
+ctelist_prima: '#define'CONST_DEF_IDENTIFIER simpvalue ctelist_prima | ʎ ;
+
 simpvalue: NUMERIC_INTEGER_CONST | NUMERIC_REAL_CONST| STRING_CONST;
-varlist: vardef ';'| varlist vardef ';';
+
+varlist: vardef ';' varlist_prima ;
+varlist_prima: vardef ';' varlist_prima | ʎ ;
+
 vardef:  tbas IDENTIFIER | tbas IDENTIFIER '=' simpvalue;
 tbas: 'integer' | 'float' | 'string' | tvoid ;
 tvoid: 'void';
@@ -20,14 +26,18 @@ tvoid: 'void';
 funcdef: funchead '{' code '}';
 funchead: tbas IDENTIFIER '(' typedef1 ')';
 typedef1:  | typedef2;
-typedef2: tbas IDENTIFIER | typedef2 ',' tbas IDENTIFIER;
+typedef2: tbas IDENTIFIER typedef2_prima ;
+typedef2_prima: ʎ | ',' tbas IDENTIFIER typedef2_prima ;
 
 //-----------------------------------Parte declaracion de sentencias pprincipal
 mainhead: tvoid 'Main' '(' typedef1 ')';
-code:  | code sent;
+code:  | sent code;
 sent: asig ';' | funccall ';' | vardef ';';
 asig: IDENTIFIER '=' exp;
-exp: exp op exp | factor;
+
+exp: factor exp_prima;
+exp_prima: op factor expr_prima | ʎ ;
+
 op: '+' | '-' | '*' | 'DIV' | 'MOD';
 factor: simpvalue | '(' exp ')' | funccall;
 funccall: IDENTIFIER subpparamlist | CONST_DEF_IDENTIFIER subpparamlist;
