@@ -19,8 +19,9 @@ varlist: vardef ';' varlist_prima ;
 varlist_prima: | vardef ';' varlist_prima ;
 
 vardef:  tbas IDENTIFIER | tbas IDENTIFIER '=' simpvalue;
-tbas: 'integer' | 'float' | 'string' | tvoid ;
+tbas: 'integer' | 'float' | 'string' | tvoid | struct;
 tvoid: 'void';
+struct: 'struct' '{' varlist '}';
 
 //----------------------------------Parte declaracion de funciones de programa
 funcdef: funchead '{' code '}';
@@ -32,7 +33,7 @@ typedef2_prima:  | ',' tbas IDENTIFIER typedef2_prima ;
 //-----------------------------------Parte declaracion de sentencias pprincipal
 mainhead: tvoid 'Main' '(' typedef1 ')';
 code:  | sent code;
-sent: asig ';' | funccall ';' | vardef ';';
+sent: asig ';' | funccall ';' | vardef ';' | if | while | dowhile | for;
 asig: IDENTIFIER '=' exp;
 
 exp: factor exp_prima;
@@ -44,8 +45,20 @@ funccall: IDENTIFIER subpparamlist | CONST_DEF_IDENTIFIER subpparamlist;
 subpparamlist: | '(' explist ')';
 explist: exp | exp ',' explist;
 
+if: 'if' expcond '{' code '}' else ;
+else: 'else' '{' code '}' | 'else' if | ;
+while: 'while' '(' expcond ')' '{' code '}' ;
+dowhile: 'do' '{' code '}' 'while' '(' expcond ')' ';' ;
+for: 'for' '(' vardef ';' expcond ';' asig ')' '{' code '}'
+    | 'for' '(' asig ';' expcond ';' asig ')' '{' code '}' ;
 
+//expcond: expcond oplog expcond | factorcond ; version no LL1
 
+expcond: factorcond expcond2 ;
+expcond2: oplog factorcond expcond2 | ;
+oplog: '||' | '&' ;
+factorcond: exp opcomp exp | '(' expcond ')' | '!' factorcond ;
+opcomp: '<' | '>' | '<=' | '>=' | '==' ;
 
 //------------Parte Analizador Lexico
 IDENTIFIER: ([a-z] | '_')('_' | [0-9] | [a-zA-Z])*([0-9] | [a-zA-Z])+ {System.out.println("Identifier detectado "+ getText());};
