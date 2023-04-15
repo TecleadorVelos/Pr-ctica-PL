@@ -61,15 +61,15 @@ factorcond: exp opcomp exp | '(' expcond ')' | '!' factorcond ;
 opcomp: '<' | '>' | '<=' | '>=' | '==' ;
 
 //------------Parte Analizador Lexico
-IDENTIFIER: ([a-z] | '_')('_' | [0-9] | [a-zA-Z])*([0-9] | [a-zA-Z])+ {System.out.println("Identifier detectado "+ getText());};
-CONST_DEF_IDENTIFIER: ([A-Z] | '_')[A-Z0-9]+('_' | [A-Z0-9])* {System.out.println("Constante detectado "+ getText());};
+IDENTIFIER: ([a-z] | '_')('_' | [0-9] | [a-zA-Z])*([0-9] | [a-zA-Z])+ ;
+CONST_DEF_IDENTIFIER: ([A-Z] | '_')[A-Z0-9]+('_' | [A-Z0-9])* ;
 
-NUMERIC_INTEGER_CONST:  ('+'|'-')?[0-9]+ {System.out.println("Constante numerica detectada "+ getText());};
+NUMERIC_INTEGER_CONST:  ('+'|'-')?[0-9]+ ;
 NUMERIC_REAL_CONST: (('+'|'-')?[0-9]+'.'[0-9]+ |('+'|'-')?'.'[0-9]+ |('+'|'-')?[0-9]+('e'|'E')('+'|'-')?[0-9]+ |
-                    (('+'|'-')?[0-9]+'.'[0-9]+ |('+'|'-')?'.'[0-9]+)('e'|'E')('+'|'-')?[0-9]+) {System.out.println("Constante real detectada "+ getText());};
+                    (('+'|'-')?[0-9]+'.'[0-9]+ |('+'|'-')?'.'[0-9]+)('e'|'E')('+'|'-')?[0-9]+) ;
 
 
-STRING_CONST: (('"' ( CONTENIDO_SIN_COMILLAD| '\\"')* '"') | ('\'' (CONTENIDO_SIN_COMILLAN | '\\\'')* '\'')) {System.out.println("Constante literal detectada "+ getText());};
+STRING_CONST: (('"' ( CONTENIDO_SIN_COMILLAD| '\\"')* '"') | ('\'' (CONTENIDO_SIN_COMILLAN | '\\\'')* '\'')) ;
 
 COMENTARIO: ( ('//'.+[\n]) | ('/*'.+'*/')) -> skip; //comentario esta bien
 
