@@ -61,7 +61,7 @@ factorcond: exp opcomp exp | '(' expcond ')' | '!' factorcond ;
 opcomp: '<' | '>' | '<=' | '>=' | '==' ;
 
 //------------Parte Analizador Lexico
-IDENTIFIER: ([a-z] | '_')('_' | [0-9] | [a-zA-Z])*([0-9] | [a-zA-Z])+ ;
+IDENTIFIER: (([a-z] | '_')('_' | [0-9] | [a-zA-Z])*([0-9] | [a-zA-Z])+ | [a-z]) ;
 CONST_DEF_IDENTIFIER: ([A-Z] | '_')[A-Z0-9]+('_' | [A-Z0-9])* ;
 
 NUMERIC_INTEGER_CONST:  ('+'|'-')?[0-9]+ ;
